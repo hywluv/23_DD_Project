@@ -12,8 +12,8 @@ module top (
     output [7:0] SEG,  // 数码管输出
     output [11:0] vga,  // VGA输出
     output h_sync,
-    v_sync  // VGA扫描信号
-    output btnx4;
+    v_sync,  // VGA扫描信号
+    output btnx4
 );
     /* 最后视频大小是？
     扫描信号800*525 有效长度640*480

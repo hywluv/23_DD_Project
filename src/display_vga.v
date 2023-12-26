@@ -1,19 +1,20 @@
 `timescale 1ns/1ps
 module display_vga( // 参考瓜豪实验说明
     input clk,
-    input [4:0] apple_x,
-    input [4:0] apple_y,
+    input [4:0] food_x,
+    input [4:0] food_y,
     input [319:0] snake_x_1dim,
     input [319:0] snake_y_1dim,
     input [5:0] snake_length,
     input [1:0] game_state,
 
-    output reg rdn, 
-    output reg [9:0] x_addr,
-    output reg [8:0] y_addr,
     output reg [3:0] r,g,b,
     output h_sync, v_sync
 );
+
+    reg rdn, 
+    reg [9:0] x_addr,
+    reg [8:0] y_addr,
 
     // define states and directions
     localparam RUNNING = 2'b00; // 运行状态

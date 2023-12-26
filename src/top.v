@@ -102,4 +102,19 @@ module top (
         .game_state(game_state)
     );    //  状态机
 
+    display_vga m6(
+        .clk(clk_vga),
+        .food_x(food_x),
+        .food_y(food_y),
+        .snake_x_1dim(snake_x_1dim),
+        .snake_y_1dim(snake_y_1dim),
+        .snake_length(snake_length),
+        .game_state(game_state),
+
+        .r(vga[11:8]),
+        .g(vga[7:4]),
+        .b(vga[3:0]),
+        .h_sync(h_sync),
+        .v_sync(v_sync)
+    ); // VGA显示
 endmodule

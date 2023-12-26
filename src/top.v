@@ -39,6 +39,10 @@ module top (
     wire [4:0] food_x; // 食物的横坐标
     wire [4:0] food_y; // 食物的纵坐标
 
+    wire [5:0] snake_length; // 蛇的长度
+    wire [319:0] snake_x_1dim; // 蛇的横坐标
+    wire [319:0] snake_y_1dim; // 蛇的纵坐标
+
     clk_vga m0(
         .clk(clk),
         .clk_vga(clk_vga)
@@ -54,7 +58,20 @@ module top (
         .direction(next_direction)
     ); // 方向控制
     snake m2(
-
+        .clk(clk),
+        .pause(pause),
+        .slow(slow),
+        .next_direction(next_direction),
+        .game_state(game_state),
+        .food_x(food_x),
+        .food_y(food_y),
+        .current_direction(current_direction),
+        .snake_x_1dim(snake_x_1dim),
+        .snake_y_1dim(snake_y_1dim),
+        .snake_length(snake_length),
+        .hit_boundary(hit_boundary),
+        .hit_self(hit_self),
+        .get_food(get_food)
     );  //  蛇的运动方向控制 死亡检测
     food m3(
         .clk(clk),
@@ -63,7 +80,16 @@ module top (
         .food_x(food_x),
         .food_y(food_y)
     );   //  食物的生成
-    score m4();  //  计分
+    score m4(
+        .clk(clk),
+        .rst(rst),
+        .snake_length(snake_length),
+        .snake_x_1dim(snake_x_1dim),
+        .snake_y_1dim(snake_y_1dim),
+        .hit_boundary(hit_boundary),
+        .hit_self(hit_self),
+        .game_state(game_state)
+    );  //  计分
     fsm m5(
         .clk(clk),
         .rst(rst),

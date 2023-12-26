@@ -24,8 +24,8 @@ module snake (
     localparam RIGHT = 2'b10;
     localparam LEFT = 2'b11;
 
-    reg [5:0] snake_x [63:0];
-    reg [5:0] snake_y [63:0];
+    reg [4:0] snake_x [63:0];
+    reg [4:0] snake_y [63:0];
     genvar i;
     generate for (i=0;i<64;i=i+1) begin
         assign snake_x_1dim[i*5+4:i*5] = snake_x[i];

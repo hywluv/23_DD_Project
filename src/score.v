@@ -5,14 +5,17 @@ module score(
     input [1:0] game_state,
     input get_food,
     output [7:0] AN,
-    output [7:0] seg,
+    output [7:0] seg
 
 );
     reg [15:0] score = 0;
 
-    if(get_food == 1 && game_state == 2'b00) begin
-        score <= score + 1;
+    always @(*) begin
+        if(get_food == 1 && game_state == 2'b00) begin
+            score <= score + 1;
+        end
     end
+
     always @(game_state) begin
         if(game_state == 2'b10 || game_state == 2'b00) begin
             score <= 0;

@@ -32,9 +32,14 @@ module snake (
         assign snake_y_1dim[i*5+4:i*5] = snake_y[i];
     end endgenerate
 
-    reg [31:0] velocity_cnt = 25_000_000*(1 + slow); // 1s
+    reg [31:0] velocity_cnt;
+
+    always @(slow) begin
+        velocity_cnt = 25_000_000*(1 + slow); // 1s
+    end
+
     reg [31:0] cnt1;
-    
+    integer j;
 
     always @(posedge clk) begin
         if(game_state == INITIAL) begin
@@ -57,11 +62,11 @@ module snake (
                 cnt1 <= 0;
                 if(next_direction == UP) begin
                     snake_x[0] <= snake_x[0];
-                    snake_y[0] <= snake_y[0] + 1;
+                    snake_y[0] <= snake_y[0] - 1;
                 end
                 else if(next_direction == DOWN) begin
                     snake_x[0] <= snake_x[0];
-                    snake_y[0] <= snake_y[0] - 1;
+                    snake_y[0] <= snake_y[0] + 1;
                 end
                 else if(next_direction == RIGHT) begin
                     snake_x[0] <= snake_x[0] + 1;
@@ -71,17 +76,17 @@ module snake (
                     snake_x[0] <= snake_x[0] - 1;
                     snake_y[0] <= snake_y[0];
                 end
-                for(i=1;i<snake_length;i=i+1) begin
-                    snake_x[i] <= snake_x[i-1];
-                    snake_y[i] <= snake_y[i-1];
+                for(j=1;j<snake_length;j=j+1) begin
+                    snake_x[j] <= snake_x[j-1];
+                    snake_y[j] <= snake_y[j-1];
                 end
                 if(snake_x[0] < 0 || snake_x[0] > 31 || snake_y[0] < 0 || snake_y[0] > 23) begin
                     hit_boundary <= 1;
                 end else begin
                     hit_boundary <= 0;
                 end
-                for(i=1;i<snake_length;i=i+1) begin
-                    if(snake_x[0] == snake_x[i] && snake_y[0] == snake_y[i]) begin
+                for(j=1;j<snake_length;j=j+1) begin
+                    if(snake_x[0] == snake_x[j] && snake_y[0] == snake_y[j]) begin
                         hit_self <= 1;
                     end
                 end
@@ -93,7 +98,5 @@ module snake (
                 end
             end
         end
-        else
-
     end
 endmodule

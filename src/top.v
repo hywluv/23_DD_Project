@@ -84,7 +84,7 @@ module top (
         .game_state(game_state),
         .get_food(get_food),
         .AN(AN),
-        .seg(SEG)
+        .SEG(SEG)
     );  //  计分
     fsm m5(
         .clk(clk),

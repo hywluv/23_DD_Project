@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module display_vga( // 参�?�瓜豪实验说�?
+module display_vga( // 参考瓜豪大实验
     input clk,
     input [4:0] food_x,
     input [4:0] food_y,
@@ -17,9 +17,9 @@ module display_vga( // 参�?�瓜豪实验说�?
     reg [8:0] y_addr;
 
     // define states and directions
-    localparam RUNNING = 2'b00; // 运行状�??
-    localparam DIE = 2'b01; // 死亡状�??
-    localparam INITIAL = 2'b10; // 初始状�??
+    localparam RUNNING = 2'b00; // 运行状态
+    localparam DIE = 2'b01; // 死亡状态
+    localparam INITIAL = 2'b10; // 初始状态
 
     localparam UP = 2'b00;
     localparam DOWN = 2'b01;

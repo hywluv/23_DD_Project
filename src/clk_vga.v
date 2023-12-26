@@ -4,7 +4,7 @@ module clk_vga(
 	input clk, 
 	output reg clk_vga
 );
-	 
+	
 	reg [2:0] cnt;
 
 	initial begin
@@ -20,7 +20,7 @@ module clk_vga(
 		end
 		else begin
 			cnt <= 0;
-			clk_1s <= ~clk_1s;
+			clk_vga <= ~clk_vga;
 		end
 	end
 

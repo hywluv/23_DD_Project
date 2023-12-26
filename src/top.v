@@ -6,7 +6,7 @@ module top (
     input pause, // pause button
     input slow, // slow button
     output [7:0] AN, // 数码管使能
-    output [7:0] seg, // 数码管输出
+    output [7:0] SEG, // 数码管输出
     output [11:0] vga, // VGA输出
     output h_sync,v_sync // VGA扫描信号
 );
@@ -50,7 +50,6 @@ module top (
 
     direction m1(
         .clk(clk),
-        .rst(rst),
         .up(up),
         .down(down),
         .right(right),
@@ -75,20 +74,17 @@ module top (
     );  //  蛇的运动方向控制 死亡检测
     food m3(
         .clk(clk),
-        .rst(rst),
         .get_food(get_food),
+        .game_state(game_state),
         .food_x(food_x),
         .food_y(food_y)
     );   //  食物的生成
     score m4(
         .clk(clk),
-        .rst(rst),
-        .snake_length(snake_length),
-        .snake_x_1dim(snake_x_1dim),
-        .snake_y_1dim(snake_y_1dim),
-        .hit_boundary(hit_boundary),
-        .hit_self(hit_self),
-        .game_state(game_state)
+        .game_state(game_state),
+        .get_food(get_food),
+        .AN(AN),
+        .seg(SEG)
     );  //  计分
     fsm m5(
         .clk(clk),

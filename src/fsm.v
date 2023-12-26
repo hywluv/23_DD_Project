@@ -23,9 +23,9 @@ module fsm(
 
     always @(posedge clk)
     begin
-        if(rst == 1) game_state <= INITIAL;
+        if(rst) game_state <= INITIAL;
         if(game_state == RUNNING) begin
-            if(hit_boundary == 1 || hit_self == 1) begin
+            if(hit_boundary || hit_self) begin
                 game_state <= DIE;
             end
         end
@@ -37,7 +37,7 @@ module fsm(
                 game_state <= INITIAL;
             end
         end
-        else if(game_state == INITIAL && (up == 1 || down == 1 || left == 1 || right ==1)) begin
+        else if(game_state == INITIAL && (up || down || left || right)) begin
             game_state <= RUNNING;
         end
     end

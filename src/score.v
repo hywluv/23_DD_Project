@@ -3,7 +3,7 @@ module score (
     input clk,
     input [1:0] game_state,
     input get_food,
-    output [7:0] AN,
+    output [4:0] AN,
     output [7:0] SEG
 
 );

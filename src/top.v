@@ -8,7 +8,7 @@ module top (
     left,  // direction button
     input pause,  // pause button
     input slow,  // slow button
-    output [7:0] AN,  // 数码管使能
+    output [4:0] AN,  // 数码管使能
     output [7:0] SEG,  // 数码管输出
     output [11:0] vga,  // VGA输出
     output h_sync,

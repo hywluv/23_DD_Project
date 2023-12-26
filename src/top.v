@@ -8,11 +8,12 @@ module top (
     left,  // direction button
     input pause,  // pause button
     input slow,  // slow button
-    output [4:0] AN,  // 数码管使能
+    output [3:0] AN,  // 数码管使能
     output [7:0] SEG,  // 数码管输出
     output [11:0] vga,  // VGA输出
     output h_sync,
     v_sync  // VGA扫描信号
+    output btnx4;
 );
     /* 最后视频大小是？
     扫描信号800*525 有效长度640*480
@@ -46,6 +47,8 @@ module top (
     wire [5:0] snake_length;  // 蛇的长度
     wire [319:0] snake_x_1dim;  // 蛇的横坐标
     wire [319:0] snake_y_1dim;  // 蛇的纵坐标
+
+    assign btnx4 = 0;
 
     clk_vga m0 (
         .clk(clk),

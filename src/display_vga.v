@@ -12,9 +12,9 @@ module display_vga( // 参考瓜豪实验说明
     output h_sync, v_sync
 );
 
-    reg rdn, 
-    reg [9:0] x_addr,
-    reg [8:0] y_addr,
+    reg rdn;
+    reg [9:0] x_addr;
+    reg [8:0] y_addr;
 
     // define states and directions
     localparam RUNNING = 2'b00; // 运行状态

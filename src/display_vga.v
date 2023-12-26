@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module display_vga( // 参考瓜豪实验说明
+module display_vga( // 参�?�瓜豪实验说�?
     input clk,
     input [4:0] food_x,
     input [4:0] food_y,
@@ -17,9 +17,9 @@ module display_vga( // 参考瓜豪实验说明
     reg [8:0] y_addr;
 
     // define states and directions
-    localparam RUNNING = 2'b00; // 运行状态
-    localparam DIE = 2'b01; // 死亡状态
-    localparam INITIAL = 2'b10; // 初始状态
+    localparam RUNNING = 2'b00; // 运行状�??
+    localparam DIE = 2'b01; // 死亡状�??
+    localparam INITIAL = 2'b10; // 初始状�??
 
     localparam UP = 2'b00;
     localparam DOWN = 2'b01;
@@ -42,8 +42,8 @@ module display_vga( // 参考瓜豪实验说明
 	always @(snake_x_1dim,snake_y_1dim)
 	begin
         for(i=0;i<64;i=i+1) begin
-            snake_x_reg[i] <= snake_x_1dim[i*5+4:i*5];
-            snake_y_reg[i] <= snake_y_1dim[i*5+4:i*5];
+            snake_x_reg[i] <= snake_x_1dim[i*5+4-:5];
+            snake_y_reg[i] <= snake_y_1dim[i*5+4-:5];
         end
     end
 
@@ -68,18 +68,16 @@ module display_vga( // 参考瓜豪实验说明
 
     always @(posedge clk) begin
         if(game_state==INITIAL) begin
-            vga_in <= 12'h100010001000;
+            vga_in <= 12'b100010001000;
             clrn <= 1'b1;
         end
         else if(game_state==RUNNING) begin
-            current_x <= 0;
-            current_y <= 0;
             for(i=0;i<snake_length;i=i+1) begin
                 if(snake_x_reg[i]*20 <= x_addr && snake_x_reg[i]*20+20>x_addr && snake_y_reg[i]*20<=y_addr && snake_y_reg[i]*20+20>y_addr) begin
                     pixel_flag <= SNAKE;
                 end
             end
-            if(apple_x*20 <= x_addr && apple_x*20+20>x_addr && apple_y*20<=y_addr && apple_y*20+20>y_addr) begin
+            if(food_x*20 <= x_addr && food_x*20+20>x_addr && food_y*20<=y_addr && food_y*20+20>y_addr) begin
                 pixel_flag <= APPLE;
             end
             else begin
@@ -99,7 +97,7 @@ module display_vga( // 参考瓜豪实验说明
             end
         end
         else if(game_state==DIE) begin
-            vga_in <= 12'h100010001000;
+            vga_in <= 12'b100010001000;
             clrn <= 1'b1;
         end
         else begin

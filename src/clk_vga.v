@@ -14,7 +14,7 @@ module clk_vga (
     assign cnt_next = cnt + 1'b1;
 
     always @(posedge clk) begin
-        if (cnt < 2) begin
+        if (cnt < 1) begin
             cnt <= cnt_next;
         end else begin
             cnt <= 0;

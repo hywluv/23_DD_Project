@@ -7,6 +7,7 @@ module fsm (
     input down,
     input right,
     input left,
+    // input start,
     input hit_boundary,
     input hit_self,
     output reg [1:0] game_state
@@ -25,7 +26,9 @@ module fsm (
     end
 
     always @(posedge clk) begin
-        if (rst) game_state <= INITIAL;
+        if (rst) begin
+            game_state <= INITIAL;
+        end
         if (game_state == RUNNING) begin
             if (hit_boundary || hit_self) begin
                 game_state <= DIE;

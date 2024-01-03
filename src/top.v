@@ -2,18 +2,24 @@
 module top (
     input clk,
     input rst,
-    input up,
-    down,
-    right,
-    left,  // direction button
+    // input btn_up,
+    // input btn_down,
+    // input btn_right,
+    // input btn_left,  // direction button
+    // input start,  // start button
     input pause,  // pause button
     input slow,  // slow button
+    input ps2_clk,
+    input ps2_data,
     output [3:0] AN,  // 数码管使能
     output [7:0] SEG,  // 数码管输出
     output [11:0] vga,  // VGA输出
     output h_sync,
-    v_sync,  // VGA扫描信号
+    output v_sync,  // VGA扫描信号
     output btnx4
+    // inout [4:0]BTN_X,
+	// inout [3:0]BTN_Y,
+    // output buzzer
 );
     /* 最后视频大小是？
     扫描信号800*525 有效长度640*480
@@ -22,6 +28,16 @@ module top (
     蛇的长度 max 64
     横坐标10位寄存器，纵坐标9位寄存器
     */
+    // assign buzzer = 1'b1;
+    reg [31:0]clkdiv;
+	always@(posedge clk) begin
+		clkdiv <= clkdiv + 1'b1;
+	end
+
+    // wire [4:0] keyCode;
+	// wire keyReady;
+	// Keypad k0 (.clk(clkdiv[15]), .keyX(BTN_Y), .keyY(BTN_X), .keyCode(keyCode), .ready(keyReady));
+
     wire clk_vga;  // VGA模块的时钟信号
     wire [1:0] game_state;  // 游戏状态
     wire [1:0] next_direction;  // 下一个方向
@@ -50,19 +66,80 @@ module top (
 
     assign btnx4 = 0;
 
+    wire up_pb;
+    wire down_pb;
+    wire right_pb;
+    wire left_pb;
+
+    
+
+    // assign up_pb = btn_up;
+    // assign down_pb = btn_down;
+    // assign left_pb = btn_left;
+    // assign right_pb = btn_right;
+
+    // ila_0 m11(
+    //     .clk(clk),
+    //     .probe0({up_pb,down_pb,right_pb,left_pb}),
+    //     .probe1(game_state)
+    // );
+    // pbdebounce m7 (
+    //     .clk(clkdiv[15]),
+    //     .button(btn_up),
+    //     .pbreg(up_pb)
+    // );  // 按键消抖
+
+    // pbdebounce m8 (
+    //     .clk(clkdiv[15]),
+    //     .button(btn_down),
+    //     .pbreg(down_pb)
+    // );  // 按键消抖
+
+    // pbdebounce m9 (
+    //     .clk(clkdiv[15]),
+    //     .button(btn_right),
+    //     .pbreg(right_pb)
+    // );  // 按键消抖
+
+    // pbdebounce m10 (
+    //     .clk(clkdiv[15]),
+    //     .button(btn_left),
+    //     .pbreg(left_pb)
+    // );  // 按键消抖
+
     clk_vga m0 (
         .clk(clk),
         .clk_vga(clk_vga)
     );  // 生成VGA时钟分频 50MHz -> 25MHz
 
+    PS2 m12 (
+        .clk(clk),
+        .rst(rst),
+        .ps2_clk(ps2_clk),
+        .ps2_data(ps2_data),
+        .up(up_pb),
+        .down(down_pb),
+        .right(right_pb),
+        .left(left_pb)
+    );  // PS2键盘
     direction m1 (
         .clk(clk),
-        .up(up),
-        .down(down),
-        .right(right),
-        .left(left),
+        .up(up_pb),
+        .down(down_pb),
+        .right(right_pb),
+        .left(left_pb),
+        // .keyCode(keyCode),
+        // .keyReady
         .direction(next_direction)
     );  // 方向控制
+
+    // direction_matrix m1 (
+    //     .clk(clk),
+    //     .keyCode(keyCode),
+    //     .keyReady(keyReady),
+    //     .direction(next_direction)
+    // );  // 方向控制
+
     snake m2 (
         .clk(clk),
         .pause(pause),
@@ -96,10 +173,11 @@ module top (
     fsm m5 (
         .clk(clk),
         .rst(rst),
-        .up(up),
-        .down(down),
-        .right(right),
-        .left(left),
+        .up(up_pb),
+        .down(down_pb),
+        .right(right_pb),
+        .left(left_pb),
+        // .start(start),
         .hit_boundary(hit_boundary),
         .hit_self(hit_self),
         .game_state(game_state)

@@ -26,24 +26,27 @@ module snake (
 
     reg [4:0] snake_x[63:0];
     reg [4:0] snake_y[63:0];
+    
+    // 生成一维数组
     genvar i;
     generate
         for (i = 0; i < 64; i = i + 1) begin
-            assign snake_x_1dim[i*5+4:i*5] = snake_x[i];
-            assign snake_y_1dim[i*5+4:i*5] = snake_y[i];
+            assign snake_x_1dim[i*5+:5] = snake_x[i];
+            assign snake_y_1dim[i*5+:5] = snake_y[i];
         end
     endgenerate
 
     reg [31:0] velocity_cnt;
 
     always @(slow) begin
-        velocity_cnt = 25_000_000 * (1 + slow);  // 1s
+        velocity_cnt = 50_000_000 * (1 + slow);  // 1s
     end
 
     reg [31:0] cnt1;
     integer j;
 
     always @(posedge clk) begin
+        // 初始状态赋值 设定长度为3
         if (game_state == INITIAL) begin
             snake_length <= 5'd3;
             snake_x[0] <= 5'd15;
@@ -52,45 +55,57 @@ module snake (
             snake_y[1] <= 5'd10;
             snake_x[2] <= 5'd15;
             snake_y[2] <= 5'd11;
+            for (j = 3; j < 64; j = j + 1) begin
+                snake_x[j] <= 0;
+                snake_y[j] <= 0;
+            end
             cnt1 <= 0;
             hit_boundary <= 0;
             hit_self <= 0;
             get_food <= 0;
         end else if (game_state == RUNNING) begin
+            // 计数 半秒一动
             if (cnt1 < velocity_cnt) begin
                 cnt1 <= cnt1 + 1;
             end else begin
                 cnt1 <= 0;
-                if (next_direction == UP) begin
-                    snake_x[0] <= snake_x[0];
-                    snake_y[0] <= snake_y[0] - 1;
-                end else if (next_direction == DOWN) begin
-                    snake_x[0] <= snake_x[0];
-                    snake_y[0] <= snake_y[0] + 1;
-                end else if (next_direction == RIGHT) begin
-                    snake_x[0] <= snake_x[0] + 1;
-                    snake_y[0] <= snake_y[0];
-                end else if (next_direction == LEFT) begin
-                    snake_x[0] <= snake_x[0] - 1;
-                    snake_y[0] <= snake_y[0];
-                end
+                if(get_food == 1) snake_length <= snake_length + 1;
+                // 更新蛇身的位置
                 for (j = 1; j < snake_length; j = j + 1) begin
                     snake_x[j] <= snake_x[j-1];
                     snake_y[j] <= snake_y[j-1];
                 end
-                if (snake_x[0] < 0 || snake_x[0] > 31 || snake_y[0] < 0 || snake_y[0] > 23) begin
-                    hit_boundary <= 1;
-                end else begin
-                    hit_boundary <= 0;
+                // 更新蛇头的位置
+                if (next_direction == UP) begin
+                    // 边缘检测
+                    if (snake_y[0] == 0) hit_boundary <= 1;
+                    snake_x[0] <= snake_x[0];
+                    snake_y[0] <= snake_y[0] - 1;
+                end else if (next_direction == DOWN) begin
+                    // 边缘检测
+                    if (snake_y[0] == 23) hit_boundary <= 1;
+                    snake_x[0] <= snake_x[0];
+                    snake_y[0] <= snake_y[0] + 1;
+                end else if (next_direction == RIGHT) begin
+                    // 边缘检测
+                    if (snake_x[0] == 31) hit_boundary <= 1;
+                    snake_x[0] <= snake_x[0] + 1;
+                    snake_y[0] <= snake_y[0];
+                end else if (next_direction == LEFT) begin
+                    // 边缘检测
+                    if (snake_x[0] == 0) hit_boundary <= 1;
+                    snake_x[0] <= snake_x[0] - 1;
+                    snake_y[0] <= snake_y[0];
                 end
+                // 撞自己检测
                 for (j = 1; j < snake_length; j = j + 1) begin
                     if (snake_x[0] == snake_x[j] && snake_y[0] == snake_y[j]) begin
                         hit_self <= 1;
                     end
                 end
+                // 吃食物 身体增长
                 if (snake_x[0] == food_x && snake_y[0] == food_y) begin
                     get_food <= 1;
-                    snake_length <= snake_length + 1;
                 end else begin
                     get_food <= 0;
                 end

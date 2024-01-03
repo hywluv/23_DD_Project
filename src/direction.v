@@ -4,15 +4,19 @@ module direction (
     input down,
     input right,
     input left,
+    // input [4:0] keyCode;
     output reg [1:0] direction
 );
-    initial begin
-        direction <= 2'b00;
-    end
+
+    localparam UP = 2'b00;
+    localparam DOWN = 2'b01;
+    localparam RIGHT = 2'b10;
+    localparam LEFT = 2'b11;
+
     always @(posedge clk) begin
-        if (up == 1) direction <= 2'b00;
-        else if (down == 1) direction <= 2'b01;
-        else if (right == 1) direction <= 2'b10;
-        else if (left == 1) direction <= 2'b11;
+        if (up && direction != DOWN) direction <= UP;
+        else if (down && direction != UP) direction <= DOWN;
+        else if (right && direction != LEFT) direction <= RIGHT;
+        else if (left && direction != RIGHT) direction <= LEFT;
     end
 endmodule

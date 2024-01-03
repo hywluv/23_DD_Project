@@ -1,10 +1,7 @@
-# set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets {SW_IBUF[1]}]
-
 set_property PACKAGE_PIN AC18 [get_ports clk]
 set_property IOSTANDARD LVCMOS18 [get_ports clk]
 
 create_clock -period 10.000 -name clk [get_ports "clk"]
-
 
 set_property PACKAGE_PIN AA10 [get_ports {slow}]
 set_property PACKAGE_PIN AB10 [get_ports {pause}]
@@ -39,17 +36,51 @@ set_property IOSTANDARD LVCMOS33 [get_ports {SEG[5]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {SEG[6]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {SEG[7]}]
 
-set_property PACKAGE_PIN V18 [get_ports {up}]
-set_property IOSTANDARD LVCMOS18 [get_ports {up}]
-set_property PACKAGE_PIN V19 [get_ports {down}]
-set_property IOSTANDARD LVCMOS18 [get_ports {down}]
-set_property PACKAGE_PIN V14 [get_ports {right}]
-set_property IOSTANDARD LVCMOS18 [get_ports {right}]
-set_property PACKAGE_PIN W14 [get_ports {left}]
-set_property IOSTANDARD LVCMOS18 [get_ports {left}]
+# Swiches for Sim
+# set_property PACKAGE_PIN AD11 [get_ports {btn_up}]
+# set_property PACKAGE_PIN Y12  [get_ports {btn_down}]
+# set_property PACKAGE_PIN Y13  [get_ports {btn_left}]
+# set_property PACKAGE_PIN AA12 [get_ports {btn_right}]
+# set_property IOSTANDARD LVCMOS15 [get_ports {btn_down}]
+# set_property IOSTANDARD LVCMOS15 [get_ports {btn_up}]
+# set_property IOSTANDARD LVCMOS15 [get_ports {btn_right}]
+# set_property IOSTANDARD LVCMOS15 [get_ports {btn_left}]
+
+# Buttons in a line
+set_property PACKAGE_PIN V18 [get_ports {btn_up}]
+set_property PACKAGE_PIN V19 [get_ports {btn_down}]
+set_property PACKAGE_PIN V14 [get_ports {btn_left}]
+set_property PACKAGE_PIN W14 [get_ports {btn_right}]
+set_property IOSTANDARD LVCMOS18 [get_ports {btn_up}]
+set_property IOSTANDARD LVCMOS18 [get_ports {btn_down}]
+set_property IOSTANDARD LVCMOS18 [get_ports {btn_right}]
+set_property IOSTANDARD LVCMOS18 [get_ports {btn_left}]
+
 set_property PACKAGE_PIN W16 [get_ports {btnx4}]
 set_property IOSTANDARD LVCMOS18 [get_ports {btnx4}]
 
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets btn*]
+
+# Button Matrix
+# set_property PACKAGE_PIN V18 [get_ports {BTN_Y[0]}]
+# set_property PACKAGE_PIN V19 [get_ports {BTN_Y[1]}]
+# set_property PACKAGE_PIN V14 [get_ports {BTN_Y[2]}]
+# set_property PACKAGE_PIN W14 [get_ports {BTN_Y[3]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_Y[0]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_Y[1]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_Y[2]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_Y[3]}]
+
+# set_property PACKAGE_PIN V17 [get_ports {BTN_X[0]}]
+# set_property PACKAGE_PIN W18 [get_ports {BTN_X[1]}]
+# set_property PACKAGE_PIN W19 [get_ports {BTN_X[2]}]
+# set_property PACKAGE_PIN W15 [get_ports {BTN_X[3]}]
+# set_property PACKAGE_PIN W16 [get_ports {BTN_X[4]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_X[0]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_X[1]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_X[2]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_X[3]}]
+# set_property IOSTANDARD LVCMOS18 [get_ports {BTN_X[3]}]
 
 set_property PACKAGE_PIN T20 [get_ports {vga[0]}]
 set_property PACKAGE_PIN R20 [get_ports {vga[1]}]
@@ -80,3 +111,8 @@ set_property PACKAGE_PIN M22 [get_ports {h_sync}]
 set_property PACKAGE_PIN M21 [get_ports {v_sync}]
 set_property IOSTANDARD LVCMOS33 [get_ports {h_sync}]
 set_property IOSTANDARD LVCMOS33 [get_ports {v_sync}]
+
+set_property PACKAGE_PIN N18 [get_ports ps2_clk]
+set_property IOSTANDARD LVCMOS33 [get_ports ps2_clk]
+set_property PACKAGE_PIN M19 [get_ports ps2_data]
+set_property IOSTANDARD LVCMOS33 [get_ports ps2_data]

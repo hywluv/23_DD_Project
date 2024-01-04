@@ -57,10 +57,11 @@ module top (
     localparam LEFT = 2'b11;
 
     wire get_food;  // 获取食物
+    wire food_display;  // 食物显示
     wire [4:0] food_x;  // 食物的横坐标
     wire [4:0] food_y;  // 食物的纵坐标
 
-    wire [5:0] snake_length;  // 蛇的长度
+    wire [5:0] snake_length_display;  // 蛇的长度
     wire [319:0] snake_x_1dim;  // 蛇的横坐标
     wire [319:0] snake_y_1dim;  // 蛇的纵坐标
 
@@ -151,10 +152,11 @@ module top (
         .current_direction(current_direction),
         .snake_x_1dim(snake_x_1dim),
         .snake_y_1dim(snake_y_1dim),
-        .snake_length(snake_length),
+        .snake_length_display(snake_length_display),
         .hit_boundary(hit_boundary),
         .hit_self(hit_self),
-        .get_food(get_food)
+        .get_food(get_food),
+        .food_display(food_display)
     );  //  蛇的运动方向控制 死亡检测
     food m3 (
         .clk(clk),
@@ -189,9 +191,9 @@ module top (
         .food_y(food_y),
         .snake_x_1dim(snake_x_1dim),
         .snake_y_1dim(snake_y_1dim),
-        .snake_length(snake_length),
+        .snake_length(snake_length_display),
         .game_state(game_state),
-
+        .food_display(food_display),
         .r(vga[11:8]),
         .g(vga[7:4]),
         .b(vga[3:0]),

@@ -10,10 +10,11 @@ module snake (
     output reg [1:0] current_direction,
     output [319:0] snake_x_1dim,  // 长度64 * 5 = 320
     output [319:0] snake_y_1dim,  // 高度64 * 5 = 320
-    output reg [5:0] snake_length,  // 长度 max 64
+    output reg [5:0] snake_length_display,  // 长度 max 64
     output reg hit_boundary,  // 撞墙
     output reg hit_self,  // 撞自己
-    output reg get_food  // 获取食物
+    output reg get_food,  // 获取食物
+    output reg food_display
 );
     localparam RUNNING = 2'b00;  // 运行状态
     localparam DIE = 2'b01;  // 死亡状态
@@ -24,6 +25,7 @@ module snake (
     localparam RIGHT = 2'b10;
     localparam LEFT = 2'b11;
 
+    reg [5:0] snake_length;
     reg [4:0] snake_x[63:0];
     reg [4:0] snake_y[63:0];
     
@@ -49,6 +51,7 @@ module snake (
         // 初始状态赋值 设定长度为3
         if (game_state == INITIAL) begin
             snake_length <= 5'd3;
+            snake_length_display <= 5'd3;
             snake_x[0] <= 5'd15;
             snake_y[0] <= 5'd9;
             snake_x[1] <= 5'd15;
@@ -63,13 +66,13 @@ module snake (
             hit_boundary <= 0;
             hit_self <= 0;
             get_food <= 0;
+            food_display <= 1;
         end else if (game_state == RUNNING) begin
             // 计数 半秒一动
             if (cnt1 < velocity_cnt) begin
                 cnt1 <= cnt1 + 1;
             end else begin
                 cnt1 <= 0;
-                if(get_food == 1) snake_length <= snake_length + 1;
                 // 更新蛇身的位置
                 for (j = 1; j < snake_length; j = j + 1) begin
                     snake_x[j] <= snake_x[j-1];
@@ -106,8 +109,12 @@ module snake (
                 // 吃食物 身体增长
                 if (snake_x[0] == food_x && snake_y[0] == food_y) begin
                     get_food <= 1;
+                    food_display <= 0;
+                    snake_length <= snake_length + 1;
                 end else begin
                     get_food <= 0;
+                    food_display <= 1;
+                    snake_length_display <= snake_length;
                 end
             end
         end

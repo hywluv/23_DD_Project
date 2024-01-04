@@ -7,6 +7,7 @@ module display_vga (
     input [319:0] snake_y_1dim,
     input [5:0] snake_length,
     input [1:0] game_state,
+    input food_display,
     output [3:0] r,
     output [3:0] g,
     output [3:0] b,
@@ -102,7 +103,7 @@ module display_vga (
 
             // 食物标签
             if (food_x * 20 <= x_addr && food_x * 20 + 20 > x_addr &&
-                food_y * 20 <= y_addr && food_y * 20 + 20 > y_addr) begin
+                food_y * 20 <= y_addr && food_y * 20 + 20 > y_addr && food_display) begin
                 pixel_flag <= APPLE;
             end
 

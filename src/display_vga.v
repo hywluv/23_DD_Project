@@ -32,11 +32,16 @@ module display_vga (
     localparam NONE = 2'b00;
     localparam APPLE = 2'b01;
     localparam SNAKE = 2'b10;
+    localparam WALL = 2'b11;
 
     localparam NONE_COLOR = 12'h000;
     localparam APPLE_COLOR = 12'hfff;
     localparam SNAKE_COLOR = 12'hff0;
 
+    reg [3:0] snake_r;
+    reg [3:0] snake_g;
+    reg [3:0] snake_b;
+    reg [11:0] snake_color;
 
     reg [4:0] snake_x_reg[63:0];
     reg [4:0] snake_y_reg[63:0];
@@ -75,9 +80,13 @@ module display_vga (
     wire [11:0] data_ini;
     wire [11:0] data_fail;
 
-    assign address = x_addr + y_addr * 640;
+    wire [8:0] address_wall;
+    wire [11:0] data_wall;
 
-    blk_mem_gen_0 INIT (
+    assign address = x_addr + y_addr * 640;
+    assign address_wall = (x_addr % 20) + (y_addr % 20) * 20;
+
+    blk_mem_gen_0 INIT_LOAD (
       .clka(clk),    // input wire clka
       .wea(1'b0),      // input wire [0 : 0] wea 读写选择 0读 1写
       .addra(address),  // input wire [18 : 0] addra
@@ -85,12 +94,20 @@ module display_vga (
       .douta(data_ini)  // output wire [15 : 0] douta
     );
 
-    blk_mem_gen_1 FAIL (
+    blk_mem_gen_1 FAIL_LOAD (
       .clka(clk),    // input wire clka
       .wea(1'b0),      // input wire [0 : 0] wea 读写选择 0读 1写
       .addra(address),  // input wire [18 : 0] addra
       .dina(0),    // input wire [15 : 0] dina
       .douta(data_fail)  // output wire [15 : 0] douta
+    );
+
+    blk_mem_gen_2 WALL_LOAD (
+      .clka(clk),    // input wire clka
+      .wea(1'b0),      // input wire [0 : 0] wea 读写选择 0读 1写
+      .addra(address_wall),  // input wire [18 : 0] addra
+      .dina(0),    // input wire [15 : 0] dina
+      .douta(data_wall)  // output wire [15 : 0] douta
     );
 
     integer j;
@@ -114,19 +131,37 @@ module display_vga (
                     snake_y_reg[j] * 20 <= y_addr &&
                     snake_y_reg[j] * 20 + 20 > y_addr) begin
                     pixel_flag <= SNAKE;
+                    if (j==0) begin
+                        snake_r <= 4'hA;
+                        snake_g <= 4'h2;
+                        snake_b <= 4'hF;
+                    end else begin
+                        snake_r <= 4'hF - j/3;
+                        snake_g <= 4'h6 + j/7;
+                        snake_b <= 4'hE - j/5;
+                    end
                 end
             end
+
+            // 墙标签，覆盖蛇标签
+            if (x_addr < 20 || x_addr >= 620 || y_addr < 20 || y_addr >= 460) begin
+                pixel_flag <= WALL;
+            end
+
             
             if (pixel_flag == SNAKE) begin
-                vga_in <= SNAKE_COLOR;
+                vga_in <= {snake_b,snake_g,snake_r};
                 clrn   <= 1'b1;
             end else if (pixel_flag == APPLE) begin
                 vga_in <= APPLE_COLOR;
                 clrn   <= 1'b1;
+            end else if (pixel_flag == WALL)begin
+                vga_in <= {12'hECA};
+                clrn   <= 1'b1;
             end else begin
                 vga_in <= NONE_COLOR;
                 clrn   <= 1'b1;
-            end
+            end 
         end else if (game_state == DIE) begin
             vga_in <= {data_fail[3:0],data_fail[7:4],data_fail[11:8]};
             clrn   <= 1'b1;

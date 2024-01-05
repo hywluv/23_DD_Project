@@ -41,7 +41,7 @@ module snake (
     reg [31:0] velocity_cnt;
 
     always @(slow) begin
-        velocity_cnt = 50_000_000 * (1 + slow);  // 1s
+        velocity_cnt = 25_000_000 * (1 + slow) - 750_000 * snake_length_display;  // 1s
     end
 
     reg [31:0] cnt1;
@@ -81,22 +81,22 @@ module snake (
                 // 更新蛇头的位置
                 if (next_direction == UP) begin
                     // 边缘检测
-                    if (snake_y[0] == 0) hit_boundary <= 1;
+                    if (snake_y[0] == 1) hit_boundary <= 1;
                     snake_x[0] <= snake_x[0];
                     snake_y[0] <= snake_y[0] - 1;
                 end else if (next_direction == DOWN) begin
                     // 边缘检测
-                    if (snake_y[0] == 23) hit_boundary <= 1;
+                    if (snake_y[0] == 22) hit_boundary <= 1;
                     snake_x[0] <= snake_x[0];
                     snake_y[0] <= snake_y[0] + 1;
                 end else if (next_direction == RIGHT) begin
                     // 边缘检测
-                    if (snake_x[0] == 31) hit_boundary <= 1;
+                    if (snake_x[0] == 30) hit_boundary <= 1;
                     snake_x[0] <= snake_x[0] + 1;
                     snake_y[0] <= snake_y[0];
                 end else if (next_direction == LEFT) begin
                     // 边缘检测
-                    if (snake_x[0] == 0) hit_boundary <= 1;
+                    if (snake_x[0] == 1) hit_boundary <= 1;
                     snake_x[0] <= snake_x[0] - 1;
                     snake_y[0] <= snake_y[0];
                 end

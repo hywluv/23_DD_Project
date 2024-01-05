@@ -11,8 +11,8 @@ module food (
         if (cnt < 96) cnt <= cnt + 1;
         else cnt <= 0;
         if (game_state == 2'b10 || game_state == 2'b00 && get_food) begin
-            food_x <= cnt % 32;
-            food_y <= cnt % 24;
+            food_x <= 1 + cnt % 30;
+            food_y <= 1 + cnt % 22;
         end
     end
 

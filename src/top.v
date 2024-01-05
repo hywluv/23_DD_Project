@@ -2,11 +2,6 @@
 module top (
     input clk,
     input rst,
-    // input btn_up,
-    // input btn_down,
-    // input btn_right,
-    // input btn_left,  // direction button
-    // input start,  // start button
     input pause,  // pause button
     input slow,  // slow button
     input ps2_clk,
@@ -17,34 +12,26 @@ module top (
     output h_sync,
     output v_sync,  // VGA扫描信号
     output btnx4
-    // inout [4:0]BTN_X,
-	// inout [3:0]BTN_Y,
-    // output buzzer
 );
-    /* 最后视频大小是？
+    /* 
     扫描信号800*525 有效长度640*480
     目前使用640*480进行制作
     坐标大小为32*24 每一个坐标对应20*20的方块
     蛇的长度 max 64
     横坐标10位寄存器，纵坐标9位寄存器
     */
-    // assign buzzer = 1'b1;
     reg [31:0]clkdiv;
 	always@(posedge clk) begin
 		clkdiv <= clkdiv + 1'b1;
 	end
-
-    // wire [4:0] keyCode;
-	// wire keyReady;
-	// Keypad k0 (.clk(clkdiv[15]), .keyX(BTN_Y), .keyY(BTN_X), .keyCode(keyCode), .ready(keyReady));
 
     wire clk_vga;  // VGA模块的时钟信号
     wire [1:0] game_state;  // 游戏状态
     wire [1:0] next_direction;  // 下一个方向
     wire [1:0] current_direction;  // 当前方向
 
-    wire hit_boundary;  // 撞墙
-    wire hit_self;  // 撞自己
+    wire hit_boundary;  // 撞墙flag
+    wire hit_self;  // 撞自己flag
 
     // define states and directions
     localparam RUNNING = 2'b00;  // 运行状态
@@ -65,48 +52,10 @@ module top (
     wire [319:0] snake_x_1dim;  // 蛇的横坐标
     wire [319:0] snake_y_1dim;  // 蛇的纵坐标
 
-    assign btnx4 = 0;
-
-    wire up_pb;
-    wire down_pb;
-    wire right_pb;
-    wire left_pb;
-
-    
-
-    // assign up_pb = btn_up;
-    // assign down_pb = btn_down;
-    // assign left_pb = btn_left;
-    // assign right_pb = btn_right;
-
-    // ila_0 m11(
-    //     .clk(clk),
-    //     .probe0({up_pb,down_pb,right_pb,left_pb}),
-    //     .probe1(game_state)
-    // );
-    // pbdebounce m7 (
-    //     .clk(clkdiv[15]),
-    //     .button(btn_up),
-    //     .pbreg(up_pb)
-    // );  // 按键消抖
-
-    // pbdebounce m8 (
-    //     .clk(clkdiv[15]),
-    //     .button(btn_down),
-    //     .pbreg(down_pb)
-    // );  // 按键消抖
-
-    // pbdebounce m9 (
-    //     .clk(clkdiv[15]),
-    //     .button(btn_right),
-    //     .pbreg(right_pb)
-    // );  // 按键消抖
-
-    // pbdebounce m10 (
-    //     .clk(clkdiv[15]),
-    //     .button(btn_left),
-    //     .pbreg(left_pb)
-    // );  // 按键消抖
+    wire up_pb; // up 消抖信号
+    wire down_pb; // down 消抖信号
+    wire right_pb; // right 消抖信号
+    wire left_pb; // left 消抖信号
 
     clk_vga m0 (
         .clk(clk),
@@ -123,23 +72,15 @@ module top (
         .right(right_pb),
         .left(left_pb)
     );  // PS2键盘
+
     direction m1 (
         .clk(clk),
         .up(up_pb),
         .down(down_pb),
         .right(right_pb),
         .left(left_pb),
-        // .keyCode(keyCode),
-        // .keyReady
         .direction(next_direction)
     );  // 方向控制
-
-    // direction_matrix m1 (
-    //     .clk(clk),
-    //     .keyCode(keyCode),
-    //     .keyReady(keyReady),
-    //     .direction(next_direction)
-    // );  // 方向控制
 
     snake m2 (
         .clk(clk),
@@ -158,6 +99,7 @@ module top (
         .get_food(get_food),
         .food_display(food_display)
     );  //  蛇的运动方向控制 死亡检测
+
     food m3 (
         .clk(clk),
         .get_food(get_food),
@@ -165,13 +107,16 @@ module top (
         .food_x(food_x),
         .food_y(food_y)
     );  //  食物的生成
+
     score m4 (
         .clk(clk),
+        .rst(rst),
         .game_state(game_state),
         .get_food(get_food),
         .AN(AN),
         .SEG(SEG)
     );  //  计分
+
     fsm m5 (
         .clk(clk),
         .rst(rst),
@@ -179,7 +124,6 @@ module top (
         .down(down_pb),
         .right(right_pb),
         .left(left_pb),
-        // .start(start),
         .hit_boundary(hit_boundary),
         .hit_self(hit_self),
         .game_state(game_state)

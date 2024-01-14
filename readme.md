@@ -26,7 +26,7 @@
 有任何建议欢迎联系hyw-luv@zju.edu.cn
 
 ## 鸣谢
-该项目参考了Greedy-Snake-Verilog](https://github.com/yusanshi/Greedy-Snake-Verilog)，鸣谢@yusanshi。
+该项目参考了[Greedy-Snake-Verilog](https://github.com/yusanshi/Greedy-Snake-Verilog)，鸣谢@yusanshi。
 
 部分硬件使用参考了[外设使用](https://guahao31.github.io/2023_DD/final_project/device/)和[PAN-Ziyue/FPGA--JOJO](https://github.com/PAN-Ziyue/FPGA--JOJO/tree/master)，鸣谢@Pan-Ziyue，@Guahao31。
 

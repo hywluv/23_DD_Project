@@ -115,7 +115,6 @@ proc step_failed { step } {
 OPTRACE "impl_1" END { }
 }
 
-set_msg_config -id {Common 17-41} -limit 10000000
 
 OPTRACE "impl_1" START { ROLLUP_1 }
 OPTRACE "Phase: Init Design" START { ROLLUP_AUTO }
@@ -123,9 +122,7 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param tcl.collectionResultDisplayLimit 0
   set_param chipscope.maxJobs 5
-  set_param xicom.use_bs_reader 1
   set_param runs.launchOptions { -jobs 20  }
 OPTRACE "create in-memory project" START { }
   create_project -in_memory -part xc7k160tffg676-1
@@ -142,7 +139,7 @@ OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
   add_files -quiet D:/DD_exp/23_DD_Project/DD_Project/DD_Project.runs/synth_1/top.dcp
   read_ip -quiet D:/DD_exp/23_DD_Project/DD_Project/DD_Project.srcs/sources_1/ip/blk_mem_gen_0_1/blk_mem_gen_0.xci
-  read_ip -quiet d:/DD_exp/23_DD_Project/DD_Project/DD_Project.srcs/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1.xci
+  read_ip -quiet D:/DD_exp/23_DD_Project/DD_Project/DD_Project.srcs/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1.xci
 OPTRACE "read constraints: implementation" START { }
   read_xdc D:/DD_exp/23_DD_Project/constraint/cons1.xdc
 OPTRACE "read constraints: implementation" END { }

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-| Date                      : Tue Jan  2 22:17:06 2024
+| Date                      : Sun Jan 14 21:06:38 2024
 | Host                      : xyw-luv running 64-bit major release  (build 9200)
 | Command                   : report_io -file top_io_placed.rpt
 | Design                    : top
@@ -674,7 +674,7 @@ Table of Contents
 | W13        |             | High Performance | IO_25_VRP_32                 | User IO       |             |      32 |            |      |                     |                      |           |            |           |          |      |                  |              |                   |              |
 | W14        |             | High Performance | IO_L24N_T3_32                | User IO       |             |      32 |            |      |                     |                      |           |            |           |          |      |                  |              |                   |              |
 | W15        |             | High Performance | IO_L22P_T3_32                | User IO       |             |      32 |            |      |                     |                      |           |            |           |          |      |                  |              |                   |              |
-| W16        | btnx4       | High Performance | IO_L22N_T3_32                | OUTPUT        | LVCMOS18    |      32 |         12 | SLOW |                     |            FP_VTT_50 |           | FIXED      |           |          |      | NONE             |              |                   |              |
+| W16        | btnx4       | High Performance | IO_L22N_T3_32                | TRISTATE      | LVCMOS18    |      32 |         12 | SLOW |                     |            FP_VTT_50 |           | FIXED      |           |          |      | NONE             |              |                   |              |
 | W17        |             | High Performance | VCCO_32                      | VCCO          |             |      32 |            |      |                     |                      |      1.80 |            |           |          |      |                  |              |                   |              |
 | W18        |             | High Performance | IO_L21P_T3_DQS_32            | User IO       |             |      32 |            |      |                     |                      |           |            |           |          |      |                  |              |                   |              |
 | W19        |             | High Performance | IO_L21N_T3_DQS_32            | User IO       |             |      32 |            |      |                     |                      |           |            |           |          |      |                  |              |                   |              |

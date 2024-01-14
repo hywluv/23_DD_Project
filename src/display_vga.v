@@ -102,14 +102,6 @@ module display_vga (
       .douta(data_fail)  // output wire [15 : 0] douta
     );
 
-    blk_mem_gen_2 WALL_LOAD (
-      .clka(clk),    // input wire clka
-      .wea(1'b0),      // input wire [0 : 0] wea 读写选择 0读 1写
-      .addra(address_wall),  // input wire [18 : 0] addra
-      .dina(0),    // input wire [15 : 0] dina
-      .douta(data_wall)  // output wire [15 : 0] douta
-    );
-
     integer j;
     always @(posedge clk) begin
         if (game_state == INITIAL) begin

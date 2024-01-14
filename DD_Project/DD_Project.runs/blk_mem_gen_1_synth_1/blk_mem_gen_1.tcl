@@ -70,10 +70,6 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "blk_mem_gen_1_synth_1" START { ROLLUP_AUTO }
-set_param tcl.collectionResultDisplayLimit 0
-set_param chipscope.maxJobs 5
-set_param xicom.use_bs_reader 1
-set_msg_config -id {Common 17-41} -limit 10000000
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
 OPTRACE "Creating in-memory project" START { }
@@ -92,7 +88,7 @@ set_property ip_output_repo d:/DD_exp/23_DD_Project/DD_Project/DD_Project.cache/
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_ip -quiet d:/DD_exp/23_DD_Project/DD_Project/DD_Project.srcs/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1.xci
+read_ip -quiet D:/DD_exp/23_DD_Project/DD_Project/DD_Project.srcs/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1.xci
 set_property used_in_implementation false [get_files -all d:/DD_exp/23_DD_Project/DD_Project/DD_Project.gen/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1_ooc.xdc]
 
 OPTRACE "Adding files" END { }

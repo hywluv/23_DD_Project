@@ -44,7 +44,7 @@
 
 ## 摘要
 
-
+本次实验游戏设计基于Verilog的贪吃蛇游戏在可编程逻辑器件（SWORD板）上实现，包括蛇的控制、食物生成、游戏逻辑、输入处理和显示控制。使用VGA显示，增加了速度调节等功能。设计涵盖数字电路、硬件描述语言编写、仿真调试和实际硬件测试。难点包括输入设备的处理、VGA显示的驱动、以及调试和仿真。使用Vivado 2023.1开发，硬件基于Xilinx Kintex-7。整个设计过程涉及多个关键步骤，旨在实现一个功能完整的Verilog贪吃蛇游戏。最终基本达成了设计目标。
 
 ## 绪论
 
@@ -179,7 +179,7 @@ ROM是FPGA中的可读写内存，在Vivado中，我们可以将数据以`.coe`�
 * Write Enable：字节写使能选项，勾中后可以单独将数据的某个字节写入RAM中，这里不使能。
 * Algorithm Options：算法选项。可选择Minimum Area（最小面积）、Low Power（低功耗）和Fixed Primitives（固定的原语），这里选择默认的Minimum Area。
 
-![image-20240104213550633](./23_DD_Project.assets/image-20240104213550633.png)
+<img src="./23_DD_Project.assets/image-20240104213550633.png" alt="image-20240104213550633" style="zoom:33%;" />
 
 接下来选择`Port A Options`
 
@@ -188,15 +188,15 @@ ROM是FPGA中的可读写内存，在Vivado中，我们可以将数据以`.coe`�
 
 设定合适的数据量可以最大化储存空间。
 
-![image-20240104214520625](./23_DD_Project.assets/image-20240104214520625.png)
+<img src="./23_DD_Project.assets/image-20240104214520625.png" alt="image-20240104214520625" style="zoom:33%;" />
 
 在`Other Options`选择需要加载的`.coe`文件即可，若数据量大于RAM大小，则会报错（如图）
 
-![image-20240104214558506](./23_DD_Project.assets/image-20240104214558506.png)
+<img src="./23_DD_Project.assets/image-20240104214558506.png" alt="image-20240104214558506" style="zoom: 33%;" />
 
 之后点击完成生成即可。
 
-![image-20240104214749412](./23_DD_Project.assets/image-20240104214749412.png)
+<img src="./23_DD_Project.assets/image-20240104214749412.png" alt="image-20240104214749412" style="zoom: 33%;" />
 
 生成结束后，会生成一系列示例文件、数据文件、仿真文件等，可以在`IP Sources`中查看
 
@@ -1149,7 +1149,45 @@ endmodule
 
 ## 实验结果
 
-### 功能测试
+### 功能测试（具体效果见视频）
+
+#### 初始状态
+
+烧录后，初始化状态机为`Initial`状态
+
+<img src="./23_DD_Project.assets/image-20240112184240496.png" alt="image-20240112184240496" style="zoom: 25%;" />
+
+#### 游戏过程状态
+
+按左右键进入游戏后界面
+
+<img src="./23_DD_Project.assets/image-20240112184548884.png" alt="image-20240112184548884" style="zoom:33%;" />
+
+游戏过程中界面——吃食物前
+
+<img src="./23_DD_Project.assets/image-20240112184706933.png" alt="image-20240112184706933" style="zoom: 21%;" />
+
+游戏过程中界面——吃食物后身体长度+1，重新随机生成食物（位置被电脑挡住了，只剩下一个角了）
+
+<img src="./23_DD_Project.assets/image-20240112184956307.png" alt="image-20240112184956307" style="zoom:22%;" />
+
+游戏过程中——记分，分数为吃食物的个数
+
+<img src="./23_DD_Project.assets/image-20240112185120479.png" alt="image-20240112185120479" style="zoom:16%;" />
+
+#### 死亡判断与状态
+
+死亡——碰到墙壁
+
+<img src="./23_DD_Project.assets/image-20240112185443485.png" alt="image-20240112185443485" style="zoom:20%;" />
+
+显示死亡图片——状态机进入死亡状态
+
+<img src="./23_DD_Project.assets/image-20240112185517059.png" alt="image-20240112185517059" style="zoom:22%;" />
+
+后续 2s 后自动变为初始状态
+
+<img src="./23_DD_Project.assets/image-20240112185552652.png" alt="image-20240112185552652" style="zoom:22%;" />
 
 ### 结果分析
 
@@ -1167,10 +1205,10 @@ endmodule
 
 我们通过小组合作完成了本次作业。合作过程中，我们使用了分布式文件管理系统与github远程库。合作在我们的设计中发挥了重要作用。
 
-![image-20240104225509201](./23_DD_Project.assets/image-20240104225509201.png)
+<img src="./23_DD_Project.assets/image-20240104225509201.png" alt="image-20240104225509201" style="zoom:50%;" />
 
 在实验过程中，我们遇到了许多未知与困难，包括按钮输入与预期不符、键盘输入非常陌生、硬件程序调试困难等，最终通过查资料、探讨、试错等方式得到了解决。Vivado日志文件可以看到我们总共在Vivado中完成了138次生成比特流。
 
-![image-20240104225902801](./23_DD_Project.assets/image-20240104225902801.png)
+<img src="./23_DD_Project.assets/image-20240104225902801.png" alt="image-20240104225902801" style="zoom: 50%;" />
 
 最终我们顺利解决了问题并成功地编写了贪吃蛇小游戏。手写硬件驱动让我们对于硬件输入输出有了更深的了解。编写bin2bcd模块也帮助我们复习了理论课上学习到的编码和组合逻辑知识。这一次课程大作业使我们收获许多实用知识与实现游戏的成就感。
